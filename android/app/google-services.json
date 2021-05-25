@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "375608740631",
+    "firebase_url": "https://video-call-intercom-default-rtdb.firebaseio.com",
+    "project_id": "video-call-intercom",
+    "storage_bucket": "video-call-intercom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375608740631:android:cd6ccab3cb202f04540552",
+        "android_client_info": {
+          "package_name": "com.lambiengcode.intercom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375608740631-bd415qqs63g5onsfa7qd35p62bvh28k1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC41j6MlW90MKjxZZoY_8isJQqPk9HAldU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375608740631-bd415qqs63g5onsfa7qd35p62bvh28k1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
