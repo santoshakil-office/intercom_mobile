@@ -51,8 +51,9 @@ class _InputBottomState extends State<InputBottom> {
     message,
     type,
   ) async {
-    Firestore.instance.runTransaction((Transaction transaction) async {
-      CollectionReference reference = Firestore.instance.collection("inboxs");
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
+      CollectionReference reference =
+          FirebaseFirestore.instance.collection("inboxs");
       await reference.add({
         'idSend': idSend,
         'receiveID': idReceive,
@@ -72,7 +73,7 @@ class _InputBottomState extends State<InputBottom> {
   }
 
   Future<void> _updateRoom() async {
-    Firestore.instance.runTransaction((Transaction transaction) async {
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       DocumentSnapshot snapshot = await transaction.get(widget.index);
       await transaction.update(widget.index, {
         'completed': true,
@@ -83,17 +84,17 @@ class _InputBottomState extends State<InputBottom> {
   //receive
   Future<String> uploadImage(file) async {
     String fileName = DateTime.now().microsecondsSinceEpoch.toString();
-    StorageReference firebaseStorageRef =
+    var firebaseStorageRef =
         FirebaseStorage.instance.ref().child('Images').child(fileName);
-    StorageUploadTask uploadTask = firebaseStorageRef.putFile(file);
-    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    var uploadTask = firebaseStorageRef.putFile(file);
+    var taskSnapshot = await uploadTask.whenComplete(() => null);
     var downUrl = await taskSnapshot.ref.getDownloadURL();
     String url = downUrl.toString();
     return url;
   }
 
   Future<void> _pickImage(ImageSource source, User user) async {
-    File selected = await ImagePicker.pickImage(source: source);
+    var selected = await ImagePicker().getImage(source: source);
     if (selected != null) {
       String message = await uploadImage(selected);
       await _sendMessage(

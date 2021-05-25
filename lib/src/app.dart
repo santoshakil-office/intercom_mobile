@@ -34,7 +34,7 @@ class _AppState extends State<App> {
     return user == null
         ? AuthenticatePage()
         : StreamBuilder(
-            stream: Firestore.instance
+            stream: FirebaseFirestore.instance
                 .collection('requests')
                 .where('receiveID', isEqualTo: user.uid)
                 .where('completed', isEqualTo: false)
@@ -45,16 +45,16 @@ class _AppState extends State<App> {
                 return Container();
               }
 
-              return snapshot.data.documents.length != 0
-                  ? snapshot.data.documents[0]['request']
+              return snapshot.data.docs.length != 0
+                  ? snapshot.data.docs[0]['request']
                       ? ReceiveCallPage(
-                          idSend: snapshot.data.documents[0]['idSend'],
-                          index: snapshot.data.documents[0].reference,
+                          idSend: snapshot.data.docs[0]['idSend'],
+                          index: snapshot.data.docs[0].reference,
                         )
                       : CallPage(
-                          idSend: snapshot.data.documents[0]['idSend'],
-                          index: snapshot.data.documents[0].reference,
-                          info: snapshot.data.documents[0],
+                          idSend: snapshot.data.docs[0]['idSend'],
+                          index: snapshot.data.docs[0].reference,
+                          info: snapshot.data.docs[0],
                         )
                   : HomePage(
                       uid: user.uid,

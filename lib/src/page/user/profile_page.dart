@@ -1,12 +1,11 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fa;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../model/user.dart';
 import '../../service/auth.dart';
 import 'package:provider/provider.dart';
 
@@ -23,27 +22,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Future<String> _uploadImage(file, uid, key) async {
     String fileName = uid;
-    StorageReference firebaseStorageRef = FirebaseStorage.instance
+    var firebaseStorageRef = FirebaseStorage.instance
         .ref()
         .child('key')
         .child('Profile')
         .child(fileName);
-    StorageUploadTask uploadTask = firebaseStorageRef.putFile(file);
-    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    var uploadTask = firebaseStorageRef.putFile(file);
+    var taskSnapshot = await uploadTask.whenComplete(() => null);
     var downUrl = await taskSnapshot.ref.getDownloadURL();
     String url = downUrl.toString();
     return url;
   }
 
   Future<void> _pickImage(ImageSource source) async {
-    File selected = await ImagePicker.pickImage(source: source);
+    var selected = await ImagePicker().getImage(source: source);
     setState(() {
-      _image = selected;
+      _image = File(selected.path);
     });
   }
 
   Future<void> _updateProfile(index, username, urlToImage, uid) async {
-    Firestore.instance.runTransaction((Transaction transaction) async {
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       DocumentSnapshot snapshot = await transaction.get(index);
       String key = snapshot['key'];
       await transaction.update(index, {
@@ -56,7 +55,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void _changePassword(String password) async {
     //Create an instance of the current user.
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    var user = fa.FirebaseAuth.instance.currentUser;
 
     //Pass in the password to updatePassword.
     user.updatePassword(password).then((_) {
@@ -193,7 +192,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     final sizeWidth = MediaQuery.of(context).size.width;
     final sizeHeight = MediaQuery.of(context).size.height;
-    final user = Provider.of<User>(context);
+    final user = Provider.of<fa.User>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -222,7 +221,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
         actions: <Widget>[
           StreamBuilder(
-            stream: Firestore.instance
+            stream: FirebaseFirestore.instance
                 .collection('users')
                 .where('id', isEqualTo: user.uid)
                 .snapshots(),
@@ -239,8 +238,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 );
               }
 
-              String username = snapshot.data.documents[0]['username'];
-              String urlToImage = snapshot.data.documents[0]['urlToImage'];
+              String username = snapshot.data.docs[0]['username'];
+              String urlToImage = snapshot.data.docs[0]['urlToImage'];
 
               return IconButton(
                 icon: Icon(
@@ -249,7 +248,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   color: Colors.blueAccent,
                 ),
                 onPressed: () async {
-                  await _updateProfile(snapshot.data.documents[0].reference,
+                  await _updateProfile(snapshot.data.docs[0].reference,
                       username, urlToImage, user.uid);
                 },
               );
@@ -262,7 +261,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         width: sizeWidth,
         color: Colors.white,
         child: StreamBuilder(
-          stream: Firestore.instance
+          stream: FirebaseFirestore.instance
               .collection('users')
               .where('id', isEqualTo: user.uid)
               .snapshots(),
@@ -276,10 +275,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               );
             }
 
-            String username = snapshot.data.documents[0]['username'];
-            String urlToImage = snapshot.data.documents[0]['urlToImage'];
-            String phone = snapshot.data.documents[0]['phone'];
-            String dept = snapshot.data.documents[0]['dept'];
+            String username = snapshot.data.docs[0]['username'];
+            String urlToImage = snapshot.data.docs[0]['urlToImage'];
+            String phone = snapshot.data.docs[0]['phone'];
+            String dept = snapshot.data.docs[0]['dept'];
 
             return ListView(
               children: <Widget>[

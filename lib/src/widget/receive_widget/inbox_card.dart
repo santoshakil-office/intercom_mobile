@@ -80,7 +80,7 @@ class InboxCard extends StatelessWidget {
     final double sizeWidth = MediaQuery.of(context).size.width;
 
     return StreamBuilder(
-      stream: Firestore.instance
+      stream: FirebaseFirestore.instance
           .collection('users')
           .where('id', isEqualTo: uid)
           .snapshots(),
@@ -156,8 +156,8 @@ class InboxCard extends StatelessWidget {
           );
         }
 
-        String username = snapshot.data.documents[0]['username'];
-        String urlToImage = snapshot.data.documents[0]['urlToImage'];
+        String username = snapshot.data.docs[0]['username'];
+        String urlToImage = snapshot.data.docs[0]['urlToImage'];
 
         return GestureDetector(
           onTap: () {

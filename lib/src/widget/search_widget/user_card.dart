@@ -18,8 +18,9 @@ class _UserCardState extends State<UserCard> {
     idReceive,
   ) async {
     String id = idSend + DateTime.now().microsecondsSinceEpoch.toString();
-    Firestore.instance.runTransaction((Transaction transaction) async {
-      CollectionReference reference = Firestore.instance.collection("requests");
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
+      CollectionReference reference =
+          FirebaseFirestore.instance.collection("requests");
 
       await reference.add({
         'idSend': idSend,
@@ -87,7 +88,7 @@ class _UserCardState extends State<UserCard> {
               ],
             ),
             StreamBuilder(
-              stream: Firestore.instance
+              stream: FirebaseFirestore.instance
                   .collection('requests')
                   .where('idSend', isEqualTo: user.uid)
                   .where('receiveID', isEqualTo: widget.user['id'])
@@ -99,13 +100,13 @@ class _UserCardState extends State<UserCard> {
                   return Container();
                 }
 
-                int length = snapshot.data.documents.length;
+                int length = snapshot.data.docs.length;
 
                 return GestureDetector(
                   onTap: () async {
                     if (length == 0) {
                       await _request(user.uid, widget.user['id']);
-                    } else if (snapshot.data.documents[0]['id'] == '') {
+                    } else if (snapshot.data.docs[0]['id'] == '') {
                       await _request(user.uid, widget.user['id']);
                     } else {}
                   },

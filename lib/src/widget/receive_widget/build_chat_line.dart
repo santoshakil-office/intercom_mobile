@@ -41,7 +41,7 @@ class _BuildChatLineState extends State<BuildChatLine> {
   int secondLeft = 0;
 
   Future<void> _updateSeen() async {
-    Firestore.instance.runTransaction((Transaction transaction) async {
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       DocumentSnapshot snapshot = await transaction.get(widget.index);
       await transaction.update(widget.index, {
         'seen': true,
@@ -85,7 +85,8 @@ class _BuildChatLineState extends State<BuildChatLine> {
     }
 
     Future<void> _deleteMessage() async {
-      Firestore.instance.runTransaction((Transaction transaction) async {
+      FirebaseFirestore.instance
+          .runTransaction((Transaction transaction) async {
         DocumentSnapshot snapshot = await transaction.get(widget.index);
         await transaction.update(widget.index, {
           'message': 'This message has been deleted.',
@@ -124,7 +125,7 @@ class _BuildChatLineState extends State<BuildChatLine> {
                   widget.isLast && widget.isMe
                       ? widget.seen
                           ? StreamBuilder(
-                              stream: Firestore.instance
+                              stream: FirebaseFirestore.instance
                                   .collection('users')
                                   .where('id', isEqualTo: widget.idUser)
                                   .snapshots(),
@@ -147,7 +148,7 @@ class _BuildChatLineState extends State<BuildChatLine> {
                                 }
 
                                 String image =
-                                    snapshot.data.documents[0]['urlToImage'];
+                                    snapshot.data.docs[0]['urlToImage'];
 
                                 return Container(
                                   height: 12.0,

@@ -15,7 +15,7 @@ class ReceiveCallPage extends StatefulWidget {
 class _ReceiveCallPageState extends State<ReceiveCallPage> {
   final assetsAudioPlayer = AssetsAudioPlayer();
   Future<void> _responce(bool accept) async {
-    Firestore.instance.runTransaction((Transaction transaction) async {
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       await transaction.update(widget.index, {
         'request': false,
         'completed': !accept,
@@ -63,7 +63,7 @@ class _ReceiveCallPageState extends State<ReceiveCallPage> {
               height: size.height * 0.15,
             ),
             StreamBuilder(
-              stream: Firestore.instance
+              stream: FirebaseFirestore.instance
                   .collection('users')
                   .where('id', isEqualTo: widget.idSend)
                   .snapshots(),
@@ -96,10 +96,10 @@ class _ReceiveCallPageState extends State<ReceiveCallPage> {
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(30.0)),
                         image: DecorationImage(
-                          image: snapshot.data.documents[0]['urlToImage'] == ''
+                          image: snapshot.data.docs[0]['urlToImage'] == ''
                               ? AssetImage('images/avt.jpg')
                               : NetworkImage(
-                                  snapshot.data.documents[0]['urlToImage'],
+                                  snapshot.data.docs[0]['urlToImage'],
                                 ),
                           fit: BoxFit.cover,
                         ),
@@ -109,7 +109,7 @@ class _ReceiveCallPageState extends State<ReceiveCallPage> {
                       height: 24.0,
                     ),
                     Text(
-                      snapshot.data.documents[0]['username'],
+                      snapshot.data.docs[0]['username'],
                       style: TextStyle(
                         color: Colors.blueAccent,
                         fontSize: size.width / 16.8,

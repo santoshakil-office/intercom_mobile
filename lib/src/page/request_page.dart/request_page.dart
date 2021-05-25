@@ -24,7 +24,7 @@ class _RequestPageState extends State<RequestPage> {
         title: Row(
           children: <Widget>[
             StreamBuilder(
-              stream: Firestore.instance
+              stream: FirebaseFirestore.instance
                   .collection('users')
                   .where('id', isEqualTo: user.uid)
                   .snapshots(),
@@ -34,7 +34,7 @@ class _RequestPageState extends State<RequestPage> {
                   return Container();
                 }
 
-                String urlToImage = snapshot.data.documents[0]['urlToImage'];
+                String urlToImage = snapshot.data.docs[0]['urlToImage'];
 
                 return CircleAvatar(
                   backgroundColor: Colors.blueAccent,
@@ -93,7 +93,7 @@ class _RequestPageState extends State<RequestPage> {
       body: searchKey.length == 0
           ? Container()
           : StreamBuilder(
-              stream: Firestore.instance
+              stream: FirebaseFirestore.instance
                   .collection('users')
                   .orderBy('username', descending: false)
                   .limit(200)
@@ -108,7 +108,7 @@ class _RequestPageState extends State<RequestPage> {
                   );
                 }
 
-                List<DocumentSnapshot> docs = snapshot.data.documents;
+                List<DocumentSnapshot> docs = snapshot.data.docs;
 
                 for (int i = 0; i < docs.length; i++) {
                   if (docs[i]['phone']

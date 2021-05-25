@@ -13,7 +13,7 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
   Future<void> _updateNotification(index) async {
-    Firestore.instance.runTransaction((Transaction transaction) async {
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       DocumentSnapshot snapshot = await transaction.get(index);
       bool notification = snapshot['notifications'];
       await transaction.update(index, {
@@ -53,7 +53,7 @@ class _NotificationPageState extends State<NotificationPage> {
         ),
         actions: [
           StreamBuilder(
-            stream: Firestore.instance
+            stream: FirebaseFirestore.instance
                 .collection('users')
                 .where('id', isEqualTo: user.uid)
                 .snapshots(),
@@ -71,15 +71,14 @@ class _NotificationPageState extends State<NotificationPage> {
 
               return IconButton(
                 icon: Icon(
-                  snapshot.data.documents[0]['notifications']
+                  snapshot.data.docs[0]['notifications']
                       ? Feather.bell
                       : Feather.bell_off,
                   color: Colors.grey.shade800,
                   size: sizeWidth / 16.5,
                 ),
                 onPressed: () async {
-                  await _updateNotification(
-                      snapshot.data.documents[0].reference);
+                  await _updateNotification(snapshot.data.docs[0].reference);
                 },
               );
             },
@@ -91,7 +90,7 @@ class _NotificationPageState extends State<NotificationPage> {
           children: [
             Expanded(
               child: StreamBuilder(
-                stream: Firestore.instance
+                stream: FirebaseFirestore.instance
                     .collection('users')
                     .where('id', isEqualTo: user.uid)
                     .snapshots(),
@@ -101,10 +100,9 @@ class _NotificationPageState extends State<NotificationPage> {
                   }
 
                   return StreamBuilder(
-                    stream: Firestore.instance
+                    stream: FirebaseFirestore.instance
                         .collection('notifications')
-                        .where('key',
-                            isEqualTo: snapshot.data.documents[0]['key'])
+                        .where('key', isEqualTo: snapshot.data.docs[0]['key'])
                         .orderBy('publishAt', descending: true)
                         .snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> result) {
@@ -112,7 +110,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         return Container();
                       }
 
-                      List<DocumentSnapshot> docs = result.data.documents;
+                      List<DocumentSnapshot> docs = result.data.docs;
 
                       docs
                           .where((doc) {

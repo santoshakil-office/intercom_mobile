@@ -103,7 +103,7 @@ class _ReceivePageState extends State<ReceivePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             StreamBuilder(
-              stream: Firestore.instance
+              stream: FirebaseFirestore.instance
                   .collection('users')
                   .where('id', isEqualTo: user.uid)
                   .snapshots(),
@@ -113,7 +113,7 @@ class _ReceivePageState extends State<ReceivePage> {
                   return Container();
                 }
 
-                String urlToImage = snapshot.data.documents[0]['urlToImage'];
+                String urlToImage = snapshot.data.docs[0]['urlToImage'];
 
                 return Row(
                   children: [
@@ -191,12 +191,12 @@ class _ReceivePageState extends State<ReceivePage> {
             Expanded(
               child: StreamBuilder(
                 stream: _state == 'All'
-                    ? Firestore.instance
+                    ? FirebaseFirestore.instance
                         .collection('requests')
                         .where('receiveID', isEqualTo: user.uid)
                         //.where('sortVal', isGreaterThanOrEqualTo: _fromDate.millisecondsSinceEpoch)
                         .snapshots()
-                    : Firestore.instance
+                    : FirebaseFirestore.instance
                         .collection('requests')
                         .where('receiveID', isEqualTo: user.uid)
                         .where('responce', isEqualTo: _state)
@@ -207,7 +207,7 @@ class _ReceivePageState extends State<ReceivePage> {
                     return Container();
                   }
 
-                  List<DocumentSnapshot> docs = snapshot.data.documents;
+                  List<DocumentSnapshot> docs = snapshot.data.docs;
 
                   //filter
                   docs

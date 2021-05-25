@@ -1,28 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fa;
 
 import '../model/user.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final fa.FirebaseAuth _auth = fa.FirebaseAuth.instance;
   //final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   //create user obj based on FirebaseUser
-  User _userFromFirebaseUser(FirebaseUser user) {
+  User _userFromFirebaseUser(fa.User user) {
     return user != null ? User(uid: user.uid) : null;
   }
 
   //auth change user stream
-  Stream<User> get user {
-    return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
+  fa.User get user {
+    return _auth.currentUser;
   }
 
   //sign in anon
   //cannot use in purchase
   Future signInAnon() async {
     try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
+      var result = await _auth.signInAnonymously();
+      var user = result.user;
 
       //create info client
       await _createDataUser(user.uid, user.uid, '', '', '');
@@ -37,9 +37,9 @@ class AuthService {
   //sign in email and password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(
+      var result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      FirebaseUser user = result.user;
+      var user = result.user;
 
       return _userFromFirebaseUser(user);
     } catch (e) {
@@ -52,9 +52,9 @@ class AuthService {
   Future registerWithEmailAndPassword(String email, String password,
       String phone, String dept, String company) async {
     try {
-      AuthResult result = await _auth.createUserWithEmailAndPassword(
+      var result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      FirebaseUser user = result.user;
+      var user = result.user;
 
       //create info client
       await _createDataUser(email, user.uid, phone, dept, company);
@@ -102,7 +102,7 @@ class AuthService {
   }
 
   Future<void> _createDataUser(email, uid, phone, dept, company) async {
-    Firestore.instance.collection('users').document(uid).setData({
+    FirebaseFirestore.instance.collection('users').doc(uid).set({
       'email': email,
       'id': uid,
       'username': email.toString().substring(0, email.toString().length - 10),
@@ -115,16 +115,16 @@ class AuthService {
   }
 
   void _createListUserGoogle(email, uid) {
-    Firestore.instance.collection('usersGoogle').document(uid).setData({
+    FirebaseFirestore.instance.collection('usersGoogle').doc(uid).set({
       'email': email,
     });
   }
 
   void _updateDataUserGoogle(email, phone, uid, url, displayName) {
     DocumentReference documentReference =
-        Firestore.instance.collection('usersGoogle').document(uid);
+        FirebaseFirestore.instance.collection('usersGoogle').doc(uid);
 
-    Firestore.instance.runTransaction((Transaction transaction) async {
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       DocumentSnapshot snapshot = await transaction.get(documentReference);
       if (snapshot.exists) {
         print("USING NOW");

@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/webrtc.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import '../../widget/general/photo_viewer.dart';
 import 'package:sdp_transform/sdp_transform.dart';
 
@@ -69,7 +69,7 @@ class _CallPageState extends State<CallPage> {
     _localStream.dispose();
     _localRenderer.dispose();
     _timmerInstance.cancel();
-    Firestore.instance.runTransaction((Transaction transaction) async {
+    FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       DocumentSnapshot snapshot = await transaction.get(widget.index);
       await transaction.update(widget.index, {
         'completed': true,
@@ -235,7 +235,7 @@ class _CallPageState extends State<CallPage> {
 
     // _localStream = stream;
     _localRenderer.srcObject = stream;
-    _localRenderer.mirror = false;
+    // _localRenderer.mirror = false;
 
     // _peerConnection.addStream(stream);
 
