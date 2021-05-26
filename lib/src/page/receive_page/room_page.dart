@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 class ChatRoomPage extends StatefulWidget {
   final String idRequest;
@@ -84,7 +83,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 ),
                 IconButton(
                   icon: Icon(
-                    Feather.arrow_left,
+                    Icons.arrow_left,
                     color: Colors.grey.shade700,
                     size: size.width / 16.0,
                   ),

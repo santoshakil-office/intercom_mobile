@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import '../../model/user.dart';
 import '../../widget/search_widget/user_card.dart';
 import 'package:provider/provider.dart';
@@ -82,7 +81,7 @@ class _RequestPageState extends State<RequestPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Feather.sliders,
+              Icons.slideshow,
               size: size.width / 16.0,
               color: Colors.grey.shade800,
             ),

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import '../../widget/notification_widget/notification_item.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +33,7 @@ class _NotificationPageState extends State<NotificationPage> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
-            Feather.arrow_left,
+            Icons.arrow_left,
             color: Colors.grey.shade800,
             size: sizeWidth / 14.5,
           ),
@@ -61,7 +60,7 @@ class _NotificationPageState extends State<NotificationPage> {
               if (!snapshot.hasData) {
                 return IconButton(
                   icon: Icon(
-                    Feather.bell,
+                    Icons.notifications,
                     color: Colors.grey.shade800,
                     size: sizeWidth / 16.5,
                   ),
@@ -72,8 +71,8 @@ class _NotificationPageState extends State<NotificationPage> {
               return IconButton(
                 icon: Icon(
                   snapshot.data.docs[0]['notifications']
-                      ? Feather.bell
-                      : Feather.bell_off,
+                      ? Icons.notifications
+                      : Icons.notifications_none,
                   color: Colors.grey.shade800,
                   size: sizeWidth / 16.5,
                 ),

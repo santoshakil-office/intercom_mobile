@@ -61,80 +61,76 @@ class _LoginPageState extends State<LoginPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              FadeAnimation(
-                                1.7,
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6.0),
-                                      color: Colors.white,
-                                      border: Border.all(
-                                        color: Colors.grey.shade200,
-                                        width: 1.2,
-                                      )),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Container(
-                                        padding: EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                            border: Border(
-                                                bottom: BorderSide(
-                                                    color: Colors.grey[200]))),
-                                        child: TextFormField(
-                                          style: TextStyle(
-                                            color: Colors.black87,
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6.0),
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      color: Colors.grey.shade200,
+                                      width: 1.2,
+                                    )),
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              bottom: BorderSide(
+                                                  color: Colors.grey[200]))),
+                                      child: TextFormField(
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: sizeWidth / 24,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        validator: (val) => val.length == 0
+                                            ? 'Enter your Email'
+                                            : null,
+                                        onChanged: (val) => email = val.trim(),
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                            left: 12.0,
+                                          ),
+                                          border: InputBorder.none,
+                                          hintText: "Email",
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
                                             fontSize: sizeWidth / 24,
                                             fontWeight: FontWeight.w400,
-                                          ),
-                                          validator: (val) => val.length == 0
-                                              ? 'Enter your Email'
-                                              : null,
-                                          onChanged: (val) =>
-                                              email = val.trim(),
-                                          decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.only(
-                                              left: 12.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: "Email",
-                                            hintStyle: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: sizeWidth / 24,
-                                              fontWeight: FontWeight.w400,
-                                            ),
                                           ),
                                         ),
                                       ),
-                                      Container(
-                                        padding: EdgeInsets.all(8),
-                                        child: TextFormField(
-                                          style: TextStyle(
-                                            color: Colors.black87,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.all(8),
+                                      child: TextFormField(
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: sizeWidth / 24,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        focusNode: textFieldFocus,
+                                        validator: (val) => val.length == 0
+                                            ? 'Enter your password'
+                                            : null,
+                                        onChanged: (val) =>
+                                            password = val.trim(),
+                                        obscureText: hidePassword,
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.only(
+                                            left: 12.0,
+                                          ),
+                                          border: InputBorder.none,
+                                          hintText: "Password",
+                                          hintStyle: TextStyle(
+                                            color: Colors.grey,
                                             fontSize: sizeWidth / 24,
                                             fontWeight: FontWeight.w400,
                                           ),
-                                          focusNode: textFieldFocus,
-                                          validator: (val) => val.length == 0
-                                              ? 'Enter your password'
-                                              : null,
-                                          onChanged: (val) =>
-                                              password = val.trim(),
-                                          obscureText: hidePassword,
-                                          decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.only(
-                                              left: 12.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: "Password",
-                                            hintStyle: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: sizeWidth / 24,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
                                         ),
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                               SizedBox(
@@ -143,38 +139,35 @@ class _LoginPageState extends State<LoginPage> {
                               SizedBox(
                                 height: 32,
                               ),
-                              FadeAnimation(
-                                1.9,
-                                GestureDetector(
-                                  onTap: () async {
-                                    if (_formKey.currentState.validate()) {
+                              GestureDetector(
+                                onTap: () async {
+                                  if (_formKey.currentState.validate()) {
+                                    setState(() {
+                                      loading = true;
+                                    });
+                                    dynamic result =
+                                        await _auth.signInWithEmailAndPassword(
+                                            email, password);
+                                    if (result == null) {
                                       setState(() {
-                                        loading = true;
+                                        loading = false;
                                       });
-                                      dynamic result = await _auth
-                                          .signInWithEmailAndPassword(
-                                              email, password);
-                                      if (result == null) {
-                                        setState(() {
-                                          loading = false;
-                                        });
-                                      } else {}
-                                    }
-                                  },
-                                  child: Container(
-                                    height: sizeHeight * 0.065,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6.0),
-                                      color: Colors.blue,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "Login",
-                                        style: TextStyle(
-                                          color: Colors.white.withOpacity(.88),
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w800,
-                                        ),
+                                    } else {}
+                                  }
+                                },
+                                child: Container(
+                                  height: sizeHeight * 0.065,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(6.0),
+                                    color: Colors.blue,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Login",
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(.88),
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w800,
                                       ),
                                     ),
                                   ),

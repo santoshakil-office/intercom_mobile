@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import '../../animation/fade_animation.dart';
 import '../../model/user.dart';
 import '../notification_page/notification_page.dart';
@@ -142,7 +141,7 @@ class _ReceivePageState extends State<ReceivePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Feather.sliders,
+              Icons.slideshow,
               size: size.width / 16.5,
               color: Colors.grey.shade800,
             ),
@@ -152,7 +151,7 @@ class _ReceivePageState extends State<ReceivePage> {
           ),
           IconButton(
             icon: Icon(
-              Feather.bell,
+              Icons.notifications,
               size: size.width / 16.5,
               color: Colors.grey.shade800,
             ),
@@ -166,7 +165,7 @@ class _ReceivePageState extends State<ReceivePage> {
           ),
           IconButton(
             icon: Icon(
-              Feather.settings,
+              Icons.settings,
               size: size.width / 16.5,
               color: Colors.grey.shade800,
             ),
@@ -232,12 +231,15 @@ class _ReceivePageState extends State<ReceivePage> {
                     }
                   }
 
-                  return FadeAnimation(
-                    .25,
-                    InboxList(
-                      documents: docs,
-                    ),
+                  return InboxList(
+                    documents: docs,
                   );
+                  // return FadeAnimation(
+                  //   .25,
+                  //   InboxList(
+                  //     documents: docs,
+                  //   ),
+                  // );
                 },
               ),
             )
@@ -313,7 +315,7 @@ class _ReceivePageState extends State<ReceivePage> {
                           ),
                         ),
                         Icon(
-                          Feather.calendar,
+                          Icons.calendar_today,
                           size: size.width / 20,
                           color: Colors.grey.shade700,
                         ),
@@ -381,7 +383,7 @@ class _ReceivePageState extends State<ReceivePage> {
                           ),
                         ),
                         Icon(
-                          Feather.calendar,
+                          Icons.calendar_today,
                           size: size.width / 20,
                           color: Colors.grey.shade700,
                         ),
@@ -431,7 +433,7 @@ class _ReceivePageState extends State<ReceivePage> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButtonFormField(
                       icon: Icon(
-                        Feather.hash,
+                        Icons.input,
                         size: size.width / 20,
                         color: Colors.grey.shade700,
                       ),

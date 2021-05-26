@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import '../../page/receive_page/room_page.dart';
 
 class InboxCard extends StatelessWidget {
@@ -283,7 +282,7 @@ class InboxCard extends StatelessWidget {
                             ),
                           ),
                           Icon(
-                            Feather.check,
+                            Icons.check,
                             color: seen
                                 ? parseColor('#00CC00')
                                 : Colors.grey.shade600,

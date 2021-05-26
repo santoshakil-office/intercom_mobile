@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart' as fa;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../service/auth.dart';
 import 'package:provider/provider.dart';
@@ -202,7 +201,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
-            Feather.arrow_left,
+            Icons.arrow_left,
             color: Colors.grey.shade800,
             size: sizeWidth / 14.5,
           ),
@@ -230,7 +229,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               if (!snapshot.hasData) {
                 return IconButton(
                   icon: Icon(
-                    Feather.refresh_cw,
+                    Icons.refresh,
                     size: sizeWidth / 14.5,
                     color: Colors.blueAccent,
                   ),
@@ -243,7 +242,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
               return IconButton(
                 icon: Icon(
-                  Feather.check,
+                  Icons.check,
                   size: sizeWidth / 14.5,
                   color: Colors.blueAccent,
                 ),
@@ -511,7 +510,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         width: 4.0,
                       ),
                       Icon(
-                        Feather.arrow_right,
+                        Icons.arrow_right,
                         color: Colors.deepPurple[800],
                         size: sizeWidth / 22.5,
                       ),
