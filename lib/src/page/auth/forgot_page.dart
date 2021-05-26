@@ -10,7 +10,7 @@ class ForgotPage extends StatefulWidget {
 
 class _ForgotPageState extends State<ForgotPage> {
   final _formKey = GlobalKey<FormState>();
-  String email;
+  late String email;
   bool loading = false;
 
   @override
@@ -84,7 +84,7 @@ class _ForgotPageState extends State<ForgotPage> {
                                     Container(
                                       padding: EdgeInsets.all(10),
                                       child: TextFormField(
-                                        validator: (val) => val.length == 0
+                                        validator: (val) => val!.length == 0
                                             ? 'Enter email'
                                             : null,
                                         onChanged: (val) => email = val.trim(),
@@ -106,7 +106,7 @@ class _ForgotPageState extends State<ForgotPage> {
                                 children: <Widget>[
                                   GestureDetector(
                                     onTap: () async {
-                                      if (_formKey.currentState.validate()) {
+                                      if (_formKey.currentState!.validate()) {
                                         setState(() {
                                           loading = true;
                                         });

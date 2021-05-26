@@ -4,7 +4,7 @@ import '../../model/user.dart';
 import 'package:provider/provider.dart';
 
 class UserCard extends StatefulWidget {
-  final DocumentSnapshot user;
+  final DocumentSnapshot? user;
 
   UserCard({this.user});
 
@@ -17,7 +17,7 @@ class _UserCardState extends State<UserCard> {
     idSend,
     idReceive,
   ) async {
-    String id = idSend + DateTime.now().microsecondsSinceEpoch.toString();
+    String? id = idSend + DateTime.now().microsecondsSinceEpoch.toString();
     FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       CollectionReference reference =
           FirebaseFirestore.instance.collection("requests");
@@ -53,9 +53,9 @@ class _UserCardState extends State<UserCard> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 CircleAvatar(
-                  backgroundImage: widget.user['urlToImage'] == ''
+                  backgroundImage: (widget.user!['urlToImage'] == ''
                       ? AssetImage('images/avt.jpg')
-                      : NetworkImage(widget.user['urlToImage']),
+                      : NetworkImage(widget.user!['urlToImage'])) as ImageProvider<Object>?,
                   radius: 26.0,
                 ),
                 SizedBox(
@@ -65,7 +65,7 @@ class _UserCardState extends State<UserCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      widget.user['username'],
+                      widget.user!['username'],
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: sizeWidth / 21.5,
@@ -76,7 +76,7 @@ class _UserCardState extends State<UserCard> {
                       height: 6.0,
                     ),
                     Text(
-                      widget.user['phone'],
+                      widget.user!['phone'],
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: sizeWidth / 25.0,
@@ -91,7 +91,7 @@ class _UserCardState extends State<UserCard> {
               stream: FirebaseFirestore.instance
                   .collection('requests')
                   .where('idSend', isEqualTo: user.uid)
-                  .where('receiveID', isEqualTo: widget.user['id'])
+                  .where('receiveID', isEqualTo: widget.user!['id'])
                   .where('completed', isEqualTo: false)
                   .snapshots(),
               builder: (BuildContext context,
@@ -100,14 +100,14 @@ class _UserCardState extends State<UserCard> {
                   return Container();
                 }
 
-                int length = snapshot.data.docs.length;
+                int length = snapshot.data!.docs.length;
 
                 return GestureDetector(
                   onTap: () async {
                     if (length == 0) {
-                      await _request(user.uid, widget.user['id']);
-                    } else if (snapshot.data.docs[0]['id'] == '') {
-                      await _request(user.uid, widget.user['id']);
+                      await _request(user.uid, widget.user!['id']);
+                    } else if (snapshot.data!.docs[0]['id'] == '') {
+                      await _request(user.uid, widget.user!['id']);
                     } else {}
                   },
                   child: Container(

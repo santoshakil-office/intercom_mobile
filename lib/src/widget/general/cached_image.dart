@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CachedImage extends StatelessWidget {
-  final String url;
+  final String? url;
 
   CachedImage({
-    @required this.url,
+    required this.url,
   });
 
   @override
@@ -14,7 +14,7 @@ class CachedImage extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(6),
         child: CachedNetworkImage(
-          imageUrl: url,
+          imageUrl: url!,
           placeholder: (context, url) =>
               Center(child: CircularProgressIndicator()),
           errorWidget: (context, url, error) => Center(

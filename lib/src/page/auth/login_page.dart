@@ -76,14 +76,14 @@ class _LoginPageState extends State<LoginPage> {
                                       decoration: BoxDecoration(
                                           border: Border(
                                               bottom: BorderSide(
-                                                  color: Colors.grey[200]))),
+                                                  color: Colors.grey[200]!))),
                                       child: TextFormField(
                                         style: TextStyle(
                                           color: Colors.black87,
                                           fontSize: sizeWidth / 24,
                                           fontWeight: FontWeight.w400,
                                         ),
-                                        validator: (val) => val.length == 0
+                                        validator: (val) => val!.length == 0
                                             ? 'Enter your Email'
                                             : null,
                                         onChanged: (val) => email = val.trim(),
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                                           fontWeight: FontWeight.w400,
                                         ),
                                         focusNode: textFieldFocus,
-                                        validator: (val) => val.length == 0
+                                        validator: (val) => val!.length == 0
                                             ? 'Enter your password'
                                             : null,
                                         onChanged: (val) =>
@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               GestureDetector(
                                 onTap: () async {
-                                  if (_formKey.currentState.validate()) {
+                                  if (_formKey.currentState!.validate()) {
                                     setState(() {
                                       loading = true;
                                     });

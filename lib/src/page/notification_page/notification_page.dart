@@ -70,14 +70,14 @@ class _NotificationPageState extends State<NotificationPage> {
 
               return IconButton(
                 icon: Icon(
-                  snapshot.data.docs[0]['notifications']
+                  snapshot.data!.docs[0]['notifications']
                       ? Icons.notifications
                       : Icons.notifications_none,
                   color: Colors.grey.shade800,
                   size: sizeWidth / 16.5,
                 ),
                 onPressed: () async {
-                  await _updateNotification(snapshot.data.docs[0].reference);
+                  await _updateNotification(snapshot.data!.docs[0].reference);
                 },
               );
             },
@@ -101,7 +101,7 @@ class _NotificationPageState extends State<NotificationPage> {
                   return StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('notifications')
-                        .where('key', isEqualTo: snapshot.data.docs[0]['key'])
+                        .where('key', isEqualTo: snapshot.data!.docs[0]['key'])
                         .orderBy('publishAt', descending: true)
                         .snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> result) {
@@ -109,7 +109,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         return Container();
                       }
 
-                      List<DocumentSnapshot> docs = result.data.docs;
+                      List<DocumentSnapshot> docs = result.data!.docs;
 
                       docs
                           .where((doc) {

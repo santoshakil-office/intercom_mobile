@@ -33,15 +33,15 @@ class _RequestPageState extends State<RequestPage> {
                   return Container();
                 }
 
-                String urlToImage = snapshot.data.docs[0]['urlToImage'];
+                String? urlToImage = snapshot.data!.docs[0]['urlToImage'];
 
                 return CircleAvatar(
                   backgroundColor: Colors.blueAccent,
                   radius: 16.98,
                   child: CircleAvatar(
-                    backgroundImage: urlToImage == ''
+                    backgroundImage: (urlToImage == ''
                         ? AssetImage('images/avt.jpg')
-                        : NetworkImage(urlToImage),
+                        : NetworkImage(urlToImage!)) as ImageProvider<Object>?,
                     radius: 16.88,
                   ),
                 );
@@ -107,7 +107,7 @@ class _RequestPageState extends State<RequestPage> {
                   );
                 }
 
-                List<DocumentSnapshot> docs = snapshot.data.docs;
+                List<DocumentSnapshot> docs = snapshot.data!.docs;
 
                 for (int i = 0; i < docs.length; i++) {
                   if (docs[i]['phone']

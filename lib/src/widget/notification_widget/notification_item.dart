@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../general/photo_viewer.dart';
 
 class NotificationItem extends StatefulWidget {
-  final String title;
-  final String body;
-  final String urlToImage;
+  final String? title;
+  final String? body;
+  final String? urlToImage;
   NotificationItem({
     this.title,
     this.body,
@@ -41,7 +41,7 @@ class _NotificationItemState extends State<NotificationItem> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.title,
+                  widget.title!,
                   style: TextStyle(
                     color: Colors.blueAccent,
                     fontSize: size.width / 20.5,
@@ -52,7 +52,7 @@ class _NotificationItemState extends State<NotificationItem> {
                   height: 4.0,
                 ),
                 Text(
-                  widget.body,
+                  widget.body!,
                   style: TextStyle(
                     color: Colors.grey.shade800,
                     fontSize: size.width / 25.0,
@@ -87,7 +87,7 @@ class _NotificationItemState extends State<NotificationItem> {
                         width: 1.8,
                       ),
                       image: DecorationImage(
-                        image: NetworkImage(widget.urlToImage),
+                        image: NetworkImage(widget.urlToImage!),
                         fit: BoxFit.cover,
                       ),
                     ),

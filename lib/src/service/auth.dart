@@ -8,12 +8,12 @@ class AuthService {
   //final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   //create user obj based on FirebaseUser
-  User _userFromFirebaseUser(fa.User user) {
+  User? _userFromFirebaseUser(fa.User? user) {
     return user != null ? User(uid: user.uid) : null;
   }
 
   //auth change user stream
-  fa.User get user {
+  fa.User? get user {
     return _auth.currentUser;
   }
 
@@ -22,7 +22,7 @@ class AuthService {
   Future signInAnon() async {
     try {
       var result = await _auth.signInAnonymously();
-      var user = result.user;
+      var user = result.user!;
 
       //create info client
       await _createDataUser(user.uid, user.uid, '', '', '');
@@ -54,7 +54,7 @@ class AuthService {
     try {
       var result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      var user = result.user;
+      var user = result.user!;
 
       //create info client
       await _createDataUser(email, user.uid, phone, dept, company);

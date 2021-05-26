@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ReceiveCallPage extends StatefulWidget {
-  final String idSend;
+  final String? idSend;
   final index;
 
   ReceiveCallPage({this.idSend, this.index});
@@ -96,11 +96,11 @@ class _ReceiveCallPageState extends State<ReceiveCallPage> {
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(30.0)),
                         image: DecorationImage(
-                          image: snapshot.data.docs[0]['urlToImage'] == ''
+                          image: (snapshot.data!.docs[0]['urlToImage'] == ''
                               ? AssetImage('images/avt.jpg')
                               : NetworkImage(
-                                  snapshot.data.docs[0]['urlToImage'],
-                                ),
+                                  snapshot.data!.docs[0]['urlToImage'],
+                                )) as ImageProvider<Object>,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -109,7 +109,7 @@ class _ReceiveCallPageState extends State<ReceiveCallPage> {
                       height: 24.0,
                     ),
                     Text(
-                      snapshot.data.docs[0]['username'],
+                      snapshot.data!.docs[0]['username'],
                       style: TextStyle(
                         color: Colors.blueAccent,
                         fontSize: size.width / 16.8,

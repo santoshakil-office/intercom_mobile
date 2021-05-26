@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class PhotoViewer extends StatefulWidget {
-  final String image;
+  final String? image;
 
   PhotoViewer({this.image});
 
@@ -19,7 +19,7 @@ class _PhotoViewerState extends State<PhotoViewer> {
       maxScale: PhotoViewComputedScale.covered * 1.8,
       initialScale: PhotoViewComputedScale.contained,
       basePosition: Alignment.center,
-      imageProvider: NetworkImage(widget.image),
+      imageProvider: NetworkImage(widget.image!),
     ));
   }
 }

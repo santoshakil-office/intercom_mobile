@@ -14,8 +14,8 @@ class ReceivePage extends StatefulWidget {
 }
 
 class _ReceivePageState extends State<ReceivePage> {
-  DateTime _fromDate;
-  DateTime _toDate;
+  DateTime? _fromDate;
+  DateTime? _toDate;
   List<String> _states = [
     'All',
     'Accept',
@@ -23,31 +23,31 @@ class _ReceivePageState extends State<ReceivePage> {
     'Missing',
     'Rejected Call',
   ];
-  String _state;
-  String _from;
-  String _to;
+  String? _state;
+  late String _from;
+  late String _to;
 
   @override
   void initState() {
     super.initState();
     _toDate = DateTime.now();
-    _fromDate = _toDate.subtract(Duration(days: 14));
-    _from = DateFormat('dd/MM/yyyy').format(_fromDate);
-    _to = DateFormat('dd/MM/yyyy').format(_toDate);
+    _fromDate = _toDate!.subtract(Duration(days: 14));
+    _from = DateFormat('dd/MM/yyyy').format(_fromDate!);
+    _to = DateFormat('dd/MM/yyyy').format(_toDate!);
     _state = _states[0];
   }
 
   Future<void> _selectDateFrom(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: _fromDate,
+        initialDate: _fromDate!,
         firstDate: DateTime(2020, 10),
         lastDate: DateTime.now());
     if (picked != null && picked != _fromDate)
       setState(() {
-        if (_toDate.compareTo(picked) != -1) {
+        if (_toDate!.compareTo(picked) != -1) {
           _fromDate = picked;
-          _from = DateFormat('dd/MM/yyyy').format(_fromDate);
+          _from = DateFormat('dd/MM/yyyy').format(_fromDate!);
         }
       });
 
@@ -56,16 +56,16 @@ class _ReceivePageState extends State<ReceivePage> {
   }
 
   Future<void> _selectDateTo(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: _toDate,
+        initialDate: _toDate!,
         firstDate: DateTime(2020, 10),
         lastDate: DateTime.now().add(Duration(days: 1)));
     if (picked != null && picked != _toDate)
       setState(() {
-        if (_fromDate.compareTo(picked) != 1) {
+        if (_fromDate!.compareTo(picked) != 1) {
           _toDate = picked;
-          _to = DateFormat('dd/MM/yyyy').format(_toDate);
+          _to = DateFormat('dd/MM/yyyy').format(_toDate!);
         }
       });
     Navigator.of(context).pop(context);
@@ -112,14 +112,14 @@ class _ReceivePageState extends State<ReceivePage> {
                   return Container();
                 }
 
-                String urlToImage = snapshot.data.docs[0]['urlToImage'];
+                String? urlToImage = snapshot.data!.docs[0]['urlToImage'];
 
                 return Row(
                   children: [
                     CircleAvatar(
-                        backgroundImage: urlToImage == ''
+                        backgroundImage: (urlToImage == ''
                             ? AssetImage('images/avt.jpg')
-                            : NetworkImage(urlToImage),
+                            : NetworkImage(urlToImage!)) as ImageProvider<Object>?,
                         radius: 16.96),
                     SizedBox(
                       width: 6.8,
@@ -206,15 +206,15 @@ class _ReceivePageState extends State<ReceivePage> {
                     return Container();
                   }
 
-                  List<DocumentSnapshot> docs = snapshot.data.docs;
+                  List<DocumentSnapshot> docs = snapshot.data!.docs;
 
                   //filter
                   docs
                       .where((doc) {
                         Timestamp responsedTime = doc['responcedTime'];
                         DateTime response = responsedTime.toDate();
-                        return response.compareTo(_toDate) == 1 ||
-                            response.compareTo(_fromDate) == -1;
+                        return response.compareTo(_toDate!) == 1 ||
+                            response.compareTo(_fromDate!) == -1;
                       }) // filter keys
                       .toList() // create a copy to avoid concurrent modifications
                       .forEach(docs.remove);
@@ -453,7 +453,7 @@ class _ReceivePageState extends State<ReceivePage> {
                               ),
                             ));
                       }).toList(),
-                      onChanged: (val) {
+                      onChanged: (dynamic val) {
                         setState(() {
                           _state = val;
                         });

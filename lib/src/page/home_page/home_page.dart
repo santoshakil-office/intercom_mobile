@@ -7,8 +7,8 @@ import '../notification_page/notification_page.dart';
 import '../receive_page/receive_page.dart';
 
 class HomePage extends StatefulWidget {
-  final String uid;
-  final Size size;
+  final String? uid;
+  final Size? size;
   HomePage({
     this.uid,
     this.size,
@@ -19,17 +19,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  FirebaseMessaging _fcm;
-  StreamSubscription iosSubscription;
+  late FirebaseMessaging _fcm;
+  StreamSubscription? iosSubscription;
 
   _saveDeviceToken() async {
     // Get the current user
-    String uid = widget.uid;
+    String? uid = widget.uid;
     print(widget.uid);
     // FirebaseUser user = await _auth.currentUser();
 
     // Get the token for this device
-    String fcmToken = await _fcm.getToken();
+    String? fcmToken = await _fcm.getToken();
 
     // Save it to FirebaseFirestore
     if (fcmToken != null) {
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
-        message.notification.title == 'Admin'
+        message.notification!.title == 'Admin'
             ? print('lambiengcode')
             : showDialog<void>(
                 context: context,
@@ -65,10 +65,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     title: Text(
-                      message.notification.title,
+                      message.notification!.title!,
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: widget.size.width / 21.5,
+                        fontSize: widget.size!.width / 21.5,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -76,10 +76,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       child: ListBody(
                         children: <Widget>[
                           Text(
-                            message.notification.body,
+                            message.notification!.body!,
                             style: TextStyle(
                               color: Colors.grey.shade800,
-                              fontSize: widget.size.width / 25.0,
+                              fontSize: widget.size!.width / 25.0,
                               fontWeight: FontWeight.w400,
                             ),
                           ),

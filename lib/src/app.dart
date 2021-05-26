@@ -10,7 +10,7 @@ import 'page/home_page/home_page.dart';
 import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
-  static bool dark;
+  static bool? dark;
   static String systemLocales = Platform.localeName.substring(0, 2);
 
   @override
@@ -31,7 +31,7 @@ class _AppState extends State<App> {
     final user = Provider.of<User>(context);
     final size = MediaQuery.of(context).size;
 
-    return user == null
+    return user.uid == null
         ? AuthenticatePage()
         : StreamBuilder(
             stream: FirebaseFirestore.instance
@@ -45,16 +45,16 @@ class _AppState extends State<App> {
                 return Container();
               }
 
-              return snapshot.data.docs.length != 0
-                  ? snapshot.data.docs[0]['request']
+              return snapshot.data!.docs.length != 0
+                  ? snapshot.data!.docs[0]['request']
                       ? ReceiveCallPage(
-                          idSend: snapshot.data.docs[0]['idSend'],
-                          index: snapshot.data.docs[0].reference,
+                          idSend: snapshot.data!.docs[0]['idSend'],
+                          index: snapshot.data!.docs[0].reference,
                         )
                       : CallPage(
-                          idSend: snapshot.data.docs[0]['idSend'],
-                          index: snapshot.data.docs[0].reference,
-                          info: snapshot.data.docs[0],
+                          idSend: snapshot.data!.docs[0]['idSend'],
+                          index: snapshot.data!.docs[0].reference,
+                          info: snapshot.data!.docs[0],
                         )
                   : HomePage(
                       uid: user.uid,

@@ -4,17 +4,17 @@ import '../general/cached_image.dart';
 import '../general/photo_viewer.dart';
 
 class BuildChatLine extends StatefulWidget {
-  final String message;
-  final String type;
-  final String name;
-  final String idUser;
-  final int hour;
-  final int min;
-  final int color;
-  final bool isMe;
-  final bool seen;
-  final bool isLast;
-  final Timestamp publishAt;
+  final String? message;
+  final String? type;
+  final String? name;
+  final String? idUser;
+  final int? hour;
+  final int? min;
+  final int? color;
+  final bool? isMe;
+  final bool? seen;
+  final bool? isLast;
+  final Timestamp? publishAt;
   final index;
 
   BuildChatLine(
@@ -56,7 +56,7 @@ class _BuildChatLineState extends State<BuildChatLine> {
       _updateSeen();
     }
     var dateTime = DateTime.now();
-    DateTime datePublish = widget.publishAt.toDate();
+    DateTime datePublish = widget.publishAt!.toDate();
     secondLeft = dateTime.difference(datePublish).inSeconds;
   }
 
@@ -65,15 +65,15 @@ class _BuildChatLineState extends State<BuildChatLine> {
     final sizeWidth = MediaQuery.of(context).size.width;
 
     void setTime() {
-      if (widget.hour < 10 && widget.min < 10) {
+      if (widget.hour! < 10 && widget.min! < 10) {
         setState(() {
           time = '0${widget.hour}:0${widget.min}';
         });
-      } else if (widget.hour < 10) {
+      } else if (widget.hour! < 10) {
         setState(() {
           time = '0${widget.hour}:${widget.min}';
         });
-      } else if (widget.min < 10) {
+      } else if (widget.min! < 10) {
         setState(() {
           time = '${widget.hour}:0${widget.min}';
         });
@@ -97,7 +97,7 @@ class _BuildChatLineState extends State<BuildChatLine> {
 
     return Row(
       mainAxisAlignment:
-          widget.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          widget.isMe! ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         GestureDetector(
           onTap: () {
@@ -115,15 +115,15 @@ class _BuildChatLineState extends State<BuildChatLine> {
           },
           child: Column(
             crossAxisAlignment:
-                widget.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                widget.isMe! ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   senderLayout(),
-                  widget.isLast && widget.isMe
-                      ? widget.seen
+                  widget.isLast! && widget.isMe!
+                      ? widget.seen!
                           ? StreamBuilder(
                               stream: FirebaseFirestore.instance
                                   .collection('users')
@@ -137,7 +137,7 @@ class _BuildChatLineState extends State<BuildChatLine> {
                                     width: 12.0,
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: Color(widget.color)),
+                                        color: Color(widget.color!)),
                                     child: Icon(
                                       Icons.check,
                                       color: Colors.grey.shade400,
@@ -147,8 +147,8 @@ class _BuildChatLineState extends State<BuildChatLine> {
                                   );
                                 }
 
-                                String image =
-                                    snapshot.data.docs[0]['urlToImage'];
+                                String? image =
+                                    snapshot.data!.docs[0]['urlToImage'];
 
                                 return Container(
                                   height: 12.0,
@@ -156,9 +156,9 @@ class _BuildChatLineState extends State<BuildChatLine> {
                                   decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
-                                          image: image == ''
+                                          image: (image == ''
                                               ? AssetImage('images/avt.jpg')
-                                              : NetworkImage(image),
+                                              : NetworkImage(image!)) as ImageProvider<Object>,
                                           fit: BoxFit.cover)),
                                 );
                               },
@@ -168,7 +168,7 @@ class _BuildChatLineState extends State<BuildChatLine> {
                               width: 12.0,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Color(widget.color),
+                                color: Color(widget.color!),
                               ),
                               child: Icon(
                                 Icons.check,
@@ -185,8 +185,8 @@ class _BuildChatLineState extends State<BuildChatLine> {
               showTime
                   ? Padding(
                       padding: EdgeInsets.only(
-                          left: widget.isMe ? 0 : 8,
-                          right: widget.isMe ? 14 : 0,
+                          left: widget.isMe! ? 0 : 8,
+                          right: widget.isMe! ? 14 : 0,
                           bottom: 4.0),
                       child: Text(
                         time,
@@ -206,14 +206,14 @@ class _BuildChatLineState extends State<BuildChatLine> {
   Widget senderLayout() {
     return Container(
       margin: EdgeInsets.only(
-          top: 6.0, right: widget.isMe && widget.isLast == false ? 10 : 0),
+          top: 6.0, right: widget.isMe! && widget.isLast == false ? 10 : 0),
       constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.65,
           maxHeight: MediaQuery.of(context).size.height * 0.4),
       decoration: BoxDecoration(
         color: widget.type == 'image'
             ? Colors.grey.shade200
-            : widget.isMe
+            : widget.isMe!
                 ? Colors.grey.shade200
                 : Colors.grey.shade300,
         borderRadius: widget.type == 'image'
@@ -233,12 +233,12 @@ class _BuildChatLineState extends State<BuildChatLine> {
     return widget.type != 'image'
         ? Text(
             widget.type == 'text'
-                ? widget.message
-                : widget.isMe
-                    ? '${widget.message.replaceAll('username', 'You')}'
-                    : '${widget.message.replaceAll('username', widget.name)}',
+                ? widget.message!
+                : widget.isMe!
+                    ? '${widget.message!.replaceAll('username', 'You')}'
+                    : '${widget.message!.replaceAll('username', widget.name!)}',
             style: TextStyle(
-                color: widget.isMe ? Colors.grey.shade800 : Colors.black,
+                color: widget.isMe! ? Colors.grey.shade800 : Colors.black,
                 fontSize: MediaQuery.of(context).size.width / 24,
                 fontWeight: FontWeight.w400),
           )

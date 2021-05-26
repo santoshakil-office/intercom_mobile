@@ -9,8 +9,8 @@ import '../../widget/general/photo_viewer.dart';
 import 'package:sdp_transform/sdp_transform.dart';
 
 class CallPage extends StatefulWidget {
-  final String idSend;
-  final DocumentSnapshot info;
+  final String? idSend;
+  final DocumentSnapshot? info;
   final index;
 
   CallPage({this.idSend, this.index, this.info});
@@ -20,13 +20,13 @@ class CallPage extends StatefulWidget {
 }
 
 class _CallPageState extends State<CallPage> {
-  Timer _timmerInstance;
+  late Timer _timmerInstance;
   int _start = 0;
   String _timmer = '';
 
   //VideoCallVariables
-  RTCPeerConnection _peerConnection;
-  MediaStream _localStream;
+  late RTCPeerConnection _peerConnection;
+  MediaStream? _localStream;
   RTCVideoRenderer _localRenderer = new RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = new RTCVideoRenderer();
   bool isFrontCamera = true;
@@ -66,7 +66,7 @@ class _CallPageState extends State<CallPage> {
 
   Future<void> _responce(responce) async {
     _peerConnection.close();
-    _localStream.dispose();
+    _localStream!.dispose();
     _localRenderer.dispose();
     _timmerInstance.cancel();
     FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
@@ -87,7 +87,7 @@ class _CallPageState extends State<CallPage> {
     _createPeerConnection().then((pc) {
       _peerConnection = pc;
       _setRemoteDescription(
-          jsonDecode(widget.info['sdp'])['sdp']['sdp'].toString());
+          jsonDecode(widget.info!['sdp'])['sdp']['sdp'].toString());
     });
     startTimmer();
   }
@@ -95,7 +95,7 @@ class _CallPageState extends State<CallPage> {
   @override
   void dispose() {
     _peerConnection.close();
-    _localStream.dispose();
+    _localStream!.dispose();
     _localRenderer.dispose();
     _timmerInstance.cancel();
     super.dispose();
@@ -108,9 +108,9 @@ class _CallPageState extends State<CallPage> {
 
   void switchCamera() async {
     if (_localStream != null) {
-      bool value = await _localStream.getVideoTracks()[0].switchCamera();
+      bool value = await _localStream!.getVideoTracks()[0].switchCamera();
       while (value == this.isFrontCamera)
-        value = await _localStream.getVideoTracks()[0].switchCamera();
+        value = await _localStream!.getVideoTracks()[0].switchCamera();
       this.isFrontCamera = value;
     }
   }
@@ -121,7 +121,7 @@ class _CallPageState extends State<CallPage> {
       'offerToReceiveAudio': 1,
     });
 
-    var session = parse(description.sdp);
+    var session = parse(description.sdp!);
     String sdp = write(session, null);
     await sendSdp(sdp);
 
@@ -159,7 +159,7 @@ class _CallPageState extends State<CallPage> {
     RTCPeerConnection pc =
         await createPeerConnection(configuration, offerSdpConstraints);
     // if (pc != null) print(pc);
-    pc.addStream(_localStream);
+    pc.addStream(_localStream!);
 
     pc.onIceCandidate = (e) {
       if (e.candidate != null) {
@@ -193,7 +193,7 @@ class _CallPageState extends State<CallPage> {
   Future sendCandidates(
     String candidate,
     String sdpMid,
-    int sdpMLineIndex,
+    int? sdpMLineIndex,
   ) async {
     DatabaseReference _candidateRef = FirebaseDatabase().reference();
     String jsonString =
@@ -270,7 +270,7 @@ class _CallPageState extends State<CallPage> {
                                 transform: Matrix4.identity()..rotateY(0.0),
                                 alignment: FractionalOffset.center,
                                 child: new Texture(
-                                    textureId: _remoteRenderer.textureId),
+                                    textureId: _remoteRenderer.textureId!),
                               ),
                             ),
                           ),
@@ -313,7 +313,7 @@ class _CallPageState extends State<CallPage> {
                                     ),
                                   alignment: FractionalOffset.center,
                                   child: new Texture(
-                                      textureId: _localRenderer.textureId),
+                                      textureId: _localRenderer.textureId!),
                                 ),
                               ),
                       ),
@@ -325,7 +325,7 @@ class _CallPageState extends State<CallPage> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => PhotoViewer(
-                                image: widget.info['urlToImage'],
+                                image: widget.info!['urlToImage'],
                               ),
                             ),
                           );
@@ -339,9 +339,9 @@ class _CallPageState extends State<CallPage> {
                             border: Border.all(
                                 color: Colors.blueAccent, width: 2.0),
                             image: DecorationImage(
-                              image: widget.info['urlToImage'] == ''
+                              image: (widget.info!['urlToImage'] == ''
                                   ? AssetImage('images/avt.jpg')
-                                  : NetworkImage(widget.info['urlToImage']),
+                                  : NetworkImage(widget.info!['urlToImage'])) as ImageProvider<Object>,
                               fit: BoxFit.cover,
                             ),
                           ),

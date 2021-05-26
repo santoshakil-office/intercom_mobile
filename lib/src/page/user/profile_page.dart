@@ -14,7 +14,7 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  File _image;
+  File? _image;
   String _username = '';
   final _formKey = GlobalKey<FormState>();
   String _password = '';
@@ -36,14 +36,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Future<void> _pickImage(ImageSource source) async {
     var selected = await ImagePicker().getImage(source: source);
     setState(() {
-      _image = File(selected.path);
+      _image = File(selected!.path);
     });
   }
 
   Future<void> _updateProfile(index, username, urlToImage, uid) async {
     FirebaseFirestore.instance.runTransaction((Transaction transaction) async {
       DocumentSnapshot snapshot = await transaction.get(index);
-      String key = snapshot['key'];
+      String? key = snapshot['key'];
       await transaction.update(index, {
         'username': _username == '' ? username : _username,
         'urlToImage':
@@ -54,7 +54,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   void _changePassword(String password) async {
     //Create an instance of the current user.
-    var user = fa.FirebaseAuth.instance.currentUser;
+    var user = fa.FirebaseAuth.instance.currentUser!;
 
     //Pass in the password to updatePassword.
     user.updatePassword(password).then((_) {
@@ -94,7 +94,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
                             border: Border(
-                                bottom: BorderSide(color: Colors.grey[200]))),
+                                bottom: BorderSide(color: Colors.grey[200]!))),
                         child: TextFormField(
                           style: TextStyle(
                             color: Colors.black87,
@@ -102,7 +102,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             fontWeight: FontWeight.w400,
                           ),
                           onChanged: (val) => _password = val.trim(),
-                          validator: (val) => val.length < 6
+                          validator: (val) => val!.length < 6
                               ? 'Password must be least 6 characters'
                               : null,
                           obscureText: true,
@@ -128,7 +128,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             fontSize: sizeWidth / 26.0,
                             fontWeight: FontWeight.w400,
                           ),
-                          validator: (val) => val.trim() != _password.trim()
+                          validator: (val) => val!.trim() != _password.trim()
                               ? 'Password do not match'
                               : null,
                           obscureText: true,
@@ -154,7 +154,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    if (_formKey.currentState.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       _changePassword(_password);
                       Navigator.of(context).pop(context);
                     }
@@ -237,8 +237,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 );
               }
 
-              String username = snapshot.data.docs[0]['username'];
-              String urlToImage = snapshot.data.docs[0]['urlToImage'];
+              String? username = snapshot.data!.docs[0]['username'];
+              String? urlToImage = snapshot.data!.docs[0]['urlToImage'];
 
               return IconButton(
                 icon: Icon(
@@ -247,7 +247,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   color: Colors.blueAccent,
                 ),
                 onPressed: () async {
-                  await _updateProfile(snapshot.data.docs[0].reference,
+                  await _updateProfile(snapshot.data!.docs[0].reference,
                       username, urlToImage, user.uid);
                 },
               );
@@ -274,10 +274,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               );
             }
 
-            String username = snapshot.data.docs[0]['username'];
-            String urlToImage = snapshot.data.docs[0]['urlToImage'];
-            String phone = snapshot.data.docs[0]['phone'];
-            String dept = snapshot.data.docs[0]['dept'];
+            String? username = snapshot.data!.docs[0]['username'];
+            String? urlToImage = snapshot.data!.docs[0]['urlToImage'];
+            String? phone = snapshot.data!.docs[0]['phone'];
+            String? dept = snapshot.data!.docs[0]['dept'];
 
             return ListView(
               children: <Widget>[
@@ -312,10 +312,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         image: DecorationImage(
                           image: _image != null
-                              ? FileImage(_image)
-                              : urlToImage == ''
+                              ? FileImage(_image!)
+                              : (urlToImage == ''
                                   ? AssetImage('images/avt.jpg')
-                                  : NetworkImage(urlToImage),
+                                  : NetworkImage(urlToImage!)) as ImageProvider<Object>,
                           fit: BoxFit.cover,
                         ),
                         shape: BoxShape.circle,
@@ -353,7 +353,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         initialValue: username,
                         validator: (val) =>
-                            val.length == 0 ? 'Enter Username' : null,
+                            val!.length == 0 ? 'Enter Username' : null,
                         onChanged: (val) => _username = val.trim(),
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.only(top: 2.0),
@@ -388,7 +388,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         initialValue: phone,
                         validator: (val) =>
-                            val.length == 0 ? 'Enter your Phone' : null,
+                            val!.length == 0 ? 'Enter your Phone' : null,
                         decoration: InputDecoration(
                           enabled: false,
                           contentPadding: EdgeInsets.only(top: 2.0),
@@ -431,7 +431,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         initialValue: dept,
                         validator: (val) =>
-                            val.length == 0 ? 'Enter your Phone' : null,
+                            val!.length == 0 ? 'Enter your Phone' : null,
                         decoration: InputDecoration(
                           enabled: false,
                           contentPadding: EdgeInsets.only(top: 2.0),

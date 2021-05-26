@@ -8,11 +8,11 @@ import '../../model/user.dart';
 import 'package:provider/provider.dart';
 
 class InputBottom extends StatefulWidget {
-  final bool request;
-  final String idReceive;
-  final String idRoom;
+  final bool? request;
+  final String? idReceive;
+  final String? idRoom;
   final index;
-  final bool available;
+  final bool? available;
 
   InputBottom({
     this.request,
@@ -27,7 +27,7 @@ class InputBottom extends StatefulWidget {
 }
 
 class _InputBottomState extends State<InputBottom> {
-  bool available = false;
+  bool? available = false;
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _InputBottomState extends State<InputBottom> {
   Widget build(BuildContext context) {
     return available == false
         ? _unAvailable(context)
-        : widget.request
+        : widget.request!
             ? _requestType(context)
             : _receiveType(context);
   }

@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class ChatRoomPage extends StatefulWidget {
-  final String idRequest;
-  final String idSend;
-  final String idReceive;
-  final String responce;
-  final Timestamp publishAt;
-  final Timestamp responcedTime;
-  final String urlToImage;
+  final String? idRequest;
+  final String? idSend;
+  final String? idReceive;
+  final String? responce;
+  final Timestamp? publishAt;
+  final Timestamp? responcedTime;
+  final String? urlToImage;
 
   ChatRoomPage({
     this.idRequest,
@@ -27,11 +27,11 @@ class ChatRoomPage extends StatefulWidget {
 }
 
 class _ChatRoomPageState extends State<ChatRoomPage> {
-  DateTime responcedTime;
-  DateTime publishAt;
-  String _publish;
-  String _responced;
-  Color _color;
+  late DateTime responcedTime;
+  late DateTime publishAt;
+  String? _publish;
+  String? _responced;
+  Color? _color;
 
   String checkDate(int input) {
     if (input < 10) {
@@ -44,8 +44,8 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   @override
   void initState() {
     super.initState();
-    responcedTime = widget.responcedTime.toDate();
-    publishAt = widget.publishAt.toDate();
+    responcedTime = widget.responcedTime!.toDate();
+    publishAt = widget.publishAt!.toDate();
     _color = widget.responce == 'Accept'
         ? Colors.green
         : widget.responce == 'Reject'
@@ -132,13 +132,13 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
             width: size.width,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: widget.urlToImage == ''
+                image: (widget.urlToImage == ''
                     ? AssetImage(
                         'images/avt.jpg',
                       )
                     : NetworkImage(
-                        widget.urlToImage,
-                      ),
+                        widget.urlToImage!,
+                      )) as ImageProvider<Object>,
                 fit: BoxFit.cover,
               ),
             ),

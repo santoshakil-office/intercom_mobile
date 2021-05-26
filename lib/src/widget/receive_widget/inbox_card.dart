@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import '../../page/receive_page/room_page.dart';
 
 class InboxCard extends StatelessWidget {
-  final String responce;
-  final Timestamp publishAt;
-  final String uid;
-  final String roomID;
-  final bool isMe;
-  final bool seen;
-  final bool request;
-  final bool completed;
+  final String? responce;
+  final Timestamp? publishAt;
+  final String? uid;
+  final String? roomID;
+  final bool? isMe;
+  final bool? seen;
+  final bool? request;
+  final bool? completed;
   final index;
-  final DocumentSnapshot doc;
+  final DocumentSnapshot? doc;
 
   InboxCard({
     this.uid,
@@ -30,12 +30,12 @@ class InboxCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int hour = publishAt.toDate().hour;
-    int min = publishAt.toDate().minute;
+    int hour = publishAt!.toDate().hour;
+    int min = publishAt!.toDate().minute;
     String time = '';
     String lastMes;
 
-    lastMes = responce.replaceAll('''\n''', ' ');
+    lastMes = responce!.replaceAll('''\n''', ' ');
     lastMes = lastMes.length > 23 ? lastMes.substring(0, 20) + '...' : lastMes;
 
     Color parseColor(String color) {
@@ -65,13 +65,13 @@ class InboxCard extends StatelessWidget {
           context: context,
           builder: (context) {
             return ChatRoomPage(
-              urlToImage: doc['urlToImage'],
-              idRequest: doc['id'],
-              idSend: doc['idSend'],
-              idReceive: doc['idReceive'],
-              publishAt: doc['publishAt'],
-              responcedTime: doc['responcedTime'],
-              responce: doc['responce'],
+              urlToImage: doc!['urlToImage'],
+              idRequest: doc!['id'],
+              idSend: doc!['idSend'],
+              idReceive: doc!['idReceive'],
+              publishAt: doc!['publishAt'],
+              responcedTime: doc!['responcedTime'],
+              responce: doc!['responce'],
             );
           });
     }
@@ -88,7 +88,7 @@ class InboxCard extends StatelessWidget {
           return Container(
             padding: EdgeInsets.fromLTRB(14, 0, 14, 8),
             decoration: BoxDecoration(
-              color: seen ? Colors.transparent : Colors.white.withOpacity(.08),
+              color: seen! ? Colors.transparent : Colors.white.withOpacity(.08),
               border: Border(
                   bottom: BorderSide(
                       color: Colors.white.withOpacity(.3), width: 0.04)),
@@ -130,7 +130,7 @@ class InboxCard extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              isMe ? 'You: message' : 'Stranger: message',
+                              isMe! ? 'You: message' : 'Stranger: message',
                               style: TextStyle(
                                 fontSize: sizeWidth / 28,
                               ),
@@ -155,8 +155,8 @@ class InboxCard extends StatelessWidget {
           );
         }
 
-        String username = snapshot.data.docs[0]['username'];
-        String urlToImage = snapshot.data.docs[0]['urlToImage'];
+        String username = snapshot.data!.docs[0]['username'];
+        String? urlToImage = snapshot.data!.docs[0]['urlToImage'];
 
         return GestureDetector(
           onTap: () {
@@ -192,13 +192,13 @@ class InboxCard extends StatelessWidget {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: NetworkImage(urlToImage),
+                                  image: NetworkImage(urlToImage!),
                                   fit: BoxFit.cover),
                             ),
                             alignment: Alignment.bottomRight,
                           );
                         },
-                        imageUrl: urlToImage,
+                        imageUrl: urlToImage!,
                         placeholder: (context, url) =>
                             Center(child: CircularProgressIndicator()),
                         errorWidget: (context, url, error) => Center(
@@ -225,7 +225,7 @@ class InboxCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: sizeWidth / 20.5,
                               fontWeight: FontWeight.bold,
-                              color: request
+                              color: request!
                                   ? Colors.redAccent
                                   : Colors.blueAccent,
                             ),
@@ -236,7 +236,7 @@ class InboxCard extends StatelessWidget {
                               color: Colors.grey.shade800,
                               fontSize: sizeWidth / 28.0,
                               fontWeight: isMe == false
-                                  ? seen
+                                  ? seen!
                                       ? FontWeight.w400
                                       : FontWeight.bold
                                   : FontWeight.w400,
@@ -258,7 +258,7 @@ class InboxCard extends StatelessWidget {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: isMe ? 'You:\b' : '$username:\b',
+                                    text: isMe! ? 'You:\b' : '$username:\b',
                                     style: TextStyle(
                                       fontSize: sizeWidth / 26.0,
                                       fontWeight: FontWeight.w600,
@@ -270,7 +270,7 @@ class InboxCard extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: sizeWidth / 26.0,
                                       fontWeight: isMe == false
-                                          ? seen
+                                          ? seen!
                                               ? FontWeight.w400
                                               : FontWeight.bold
                                           : FontWeight.w400,
@@ -283,7 +283,7 @@ class InboxCard extends StatelessWidget {
                           ),
                           Icon(
                             Icons.check,
-                            color: seen
+                            color: seen!
                                 ? parseColor('#00CC00')
                                 : Colors.grey.shade600,
                             size: sizeWidth / 18.5,
